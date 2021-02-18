@@ -5,8 +5,8 @@
 #1. (Var) Setup the empty board as a list
 testBoard = ['no','X','O','X','X','O','O','X','X','X'] #for testing checkWin and checkFull
 
-theBoard = ['no','','','','','','','','','']
-             #0  #1 #2 #3 #4 #5 #6 #7 #8 #9
+theBoard = ['no',' ',' ',' ',' ',' ',' ',' ',' ',' ']
+             #0  #1  #2  #3  #4  #5  #6  #7  #8  #9
 
 import time       #For any timers
 import random     #For RNG
@@ -17,11 +17,12 @@ import random     #For RNG
 #out: none
 
 def printBoard():
+    print()
     print(theBoard[7] + " | " + theBoard[8] + " | " + theBoard[9])
-    print("---------")
+    print("--+---+--")
     print(theBoard[4] + " | " + theBoard[5] + " | " + theBoard[6])
-    print("---------")
-    print(theBoard[1] + " | " + theBoard[2] + " | " + theBoard[3])
+    print("--+---+--")
+    print(theBoard[1] + " | " + theBoard[2] + " | " + theBoard[3],"\n")
 
 #3a. (fun) Determine if player is X or O
 
@@ -58,11 +59,11 @@ def chooseStart():
 
   randstart = random.randrange(1,3) #Randomly select who goes first
   if randstart == 1:
-    print("Player 1 will take the first move")
+    print("Player 1 will take the first move\n")
     firstplayer = 1
     secondplayer = 2
   if randstart == 2:
-    print("Player 2 will take the first move")
+    print("Player 2 will take the first move\n")
     firstplayer = 2
     secondplayer = 1
 
@@ -78,7 +79,7 @@ def playerMove(board, player):
   global theBoard
   if player == 1:
     move1 = int(input("Player 1, What position? "))
-    if theBoard[move1] == '':
+    if theBoard[move1] == ' ':
       theBoard.pop(move1)
       theBoard.insert(move1, player1)
       printBoard()
@@ -89,7 +90,7 @@ def playerMove(board, player):
 
   elif player == 2:
     move2 = int(input("Player 2, What position? "))
-    if theBoard[move2] == '':
+    if theBoard[move2] == ' ':
       theBoard.pop(move2)
       theBoard.insert(move2, player2)
       printBoard()
@@ -103,31 +104,42 @@ def playerMove(board, player):
 #in: board as list, player as X or O
 #do: check all possible win scenarios
 #out: True for win, False otherwise
-    
-def checkWin(board, player):
+
+winner = ''
+
+def checkWin(board):
+  global winner
 
   if theBoard[7] == theBoard[8] == theBoard[9] != ' ':
+    winner = theBoard[7]
     return True
 
   elif theBoard[4] == theBoard[5] == theBoard[6] != ' ':
+    winner = theBoard[4]
     return True
 
   elif theBoard[1] == theBoard[2] == theBoard[3] != ' ':
+    winner = theBoard[1]
     return True
 
   elif theBoard[1] == theBoard[5] == theBoard[9] != ' ':
+    winner = theBoard[1]
     return True
 
   elif theBoard[3] == theBoard[5] == theBoard[7] != ' ':
+    winner = theBoard[3]
     return True
 
   elif theBoard[1] == theBoard[4] == theBoard[7] != ' ':
+    winner = theBoard[1]
     return True
 
   elif theBoard[2] == theBoard[5] == theBoard[8] != ' ':
+    winner = theBoard[2]
     return True
 
   elif theBoard[3] == theBoard[6] == theBoard[9] != ' ':
+    winner = theBoard[3]
     return True
 
   else:
@@ -142,7 +154,7 @@ def checkWin(board, player):
 
 
 def checkFull(board):
-  if '' in board:
+  if ' ' in board:
     return False
   else:
     return True
@@ -156,18 +168,16 @@ def main():
   #print Welcome
   #print instructions
 
-  print("Welcome to python Tic Tac Toe")
+  print("Welcome to python Tic Tac Toe\n")
   print("----------------------------------------------------------")
   time.sleep(1.5)
-  print("The board has 9 spots, this is the layout")
-  print("")
+  print("The board has 9 spots, this is the layout\n")
   print("7" + " | " + "8" + " | " + "9")
-  print("---------")
+  print("--+---+--")
   print("4" + " | " + "5" + " | " + "6")
-  print("---------")
-  print("1" + " | " + "2" + " | " + "3")
-  print("")
-  print("To win, you need to get 3 of your letter in a line, vertically, horizontally, or diagonally")
+  print("--+---+--")
+  print("1" + " | " + "2" + " | " + "3\n")
+  print("To win, you need to get 3 of your letter in a line, vertically, horizontally, or diagonally, to place a letter, use the numbers on the above grid")
   print("----------------------------------------------------------")
 
   #game play
@@ -183,18 +193,29 @@ def main():
 
   turn = firstplayer
 
-  while checkFull == False:
-    playerMove(theBoard,firstplayer)
-    ###first player move
-        #player chooses move
-        #print board
-        #check win
-        #check board full
+  while checkFull(theBoard) == False and checkWin(theBoard) == False:
+    playerMove(theBoard, turn)
+    checkFull(theBoard)
+    checkWin(theBoard)
 
-    ###second player move
-        #player chooses move
-        #print baord
-        #check win
+    if checkFull(theBoard) == True:
+      print("----------------------------------------------------------")
+      print("Tie!")
+
+    if turn == 2:
+      if checkWin(theBoard) == True:
+        print("----------------------------------------------------------")
+        print(winner,"has won!")
+      else:
+        turn = 1
+
+    elif turn == 1:
+      if checkWin(theBoard) == True:
+        print("----------------------------------------------------------")
+        print(winner,"has won!")
+      else:
+        turn = 2
+
     
 main()
 
