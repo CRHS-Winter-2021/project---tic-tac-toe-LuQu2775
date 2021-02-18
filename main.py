@@ -41,13 +41,13 @@ def chooseLetter():
     global player2
     if player1 == "X":
       player2 = "O"
-      print("")
-      print("Player 1 is X, Player 2 is O") #Print who is what letter
-    else:
+      print("\nPlayer 1 is X, Player 2 is O") #Print who is what letter
+    elif player1 == "O":
       player2 = "X"
-      print("")
-      print("Player 1 is O, Player 2 is X")
-    
+      print("\nPlayer 1 is O, Player 2 is X")
+    else:
+      print("\n|ERROR| Incorrect selection, try again using upper case X or O\n") #catches any user errors
+      chooseLetter()
 
 firstplayer = '' #the player who goes first
 seondplayer = ''
@@ -75,18 +75,23 @@ def chooseStart():
 #out: none
 
 
-def playerMove(board, player): 
+def playerMove(board, player): #gets the players move
   global theBoard
   if player == 1:
     move1 = int(input("Player 1, What position? "))
-    if theBoard[move1] == ' ':
-      theBoard.pop(move1)
-      theBoard.insert(move1, player1)
-      printBoard()
+    if move1 < 10:
+      if theBoard[move1] == ' ':
+        theBoard.pop(move1)
+        theBoard.insert(move1, player1)
+        printBoard()
+      else:
+        print("|ERROR| Space already taken, please try again after checking the open spots\n")
+        time.sleep(0.5)
+        playerMove(theBoard,player)
     else:
-      print("Space already taken")
+      print("|ERROR| Space doesn't exist, please try again using a number from 1-9\n")
       time.sleep(0.5)
-      playerMove(theBoard,firstplayer)
+      playerMove(theBoard,player)
 
   elif player == 2:
     move2 = int(input("Player 2, What position? "))
@@ -95,7 +100,7 @@ def playerMove(board, player):
       theBoard.insert(move2, player2)
       printBoard()
     else:
-      print("Space already taken")
+      print("|ERROR| Space is already taken")
       time.sleep(0.5)
       playerMove(theBoard,firstplayer)
   
@@ -168,6 +173,7 @@ def main():
   #print Welcome
   #print instructions
 
+  print("----------------------------------------------------------")
   print("Welcome to python Tic Tac Toe\n")
   print("----------------------------------------------------------")
   time.sleep(1.5)
@@ -206,6 +212,8 @@ def main():
       if checkWin(theBoard) == True:
         print("----------------------------------------------------------")
         print(winner,"has won!")
+        time.sleep(.5)
+        main()
       else:
         turn = 1
 
@@ -213,6 +221,8 @@ def main():
       if checkWin(theBoard) == True:
         print("----------------------------------------------------------")
         print(winner,"has won!")
+        time.sleep(.5)
+        main()
       else:
         turn = 2
 
