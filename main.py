@@ -211,18 +211,14 @@ def main():
     if turn == 2:
       if checkWin(theBoard) == True:
         print("----------------------------------------------------------")
-        print(winner,"has won!")
-        time.sleep(.5)
-        main()
+        print(winner,"has won! You may now re-run the program to replay")
       else:
         turn = 1
 
     elif turn == 1:
       if checkWin(theBoard) == True:
         print("----------------------------------------------------------")
-        print(winner,"has won!")
-        time.sleep(.5)
-        main()
+        print(winner,"has won! You may now re-run the program to replay")
       else:
         turn = 2
 
